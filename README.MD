@@ -50,8 +50,8 @@ A lightweight and scalable API for analyzing customer feedback sentiment. The to
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/RNEYRINCK/sentiment_analysis_api.git
-cd sentiment-analysis-api
+git clone https://github.com/rneyrinck/sentiment_analysis_tool.git
+cd sentiment_analysis_tool
 ```
 
 ### 2. Install Dependencies
@@ -62,23 +62,6 @@ pip install -r requirements.txt
 ```bash
 uvicorn app.main:app --reload
 The API will be available at http://127.0.0.1:8000.
-```
-## Deployment
-### Using Docker
-1. Build the Docker image:
-```bash
-docker build -t sentiment-analysis-api .
-```
-2. Run the container:
-```bash
-docker run -p 8000:8000 sentiment-analysis-api
-```
-### Using Heroku
-1. Install Heroku CLI.
-2. Deploy the app:
-```bash
-heroku create
-git push heroku main
 ```
 
 ## Contributing
