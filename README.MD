@@ -115,5 +115,16 @@ sentiment-analysis-api/
     └── README.md            # Deployment instructions
 ```
 
+### model.py: Handles the core functionality of the ML model.
+
+- The API in main.py will call load_model() once during initialization.
+- For every request, it will use analyze_text() or analyze_batch() for predictions.
+
+### utils.py: Provides supporting utilities.
+
+- CSV Validation: Validates that uploaded files have the correct structure.
+- Preprocessing: Cleans text before passing it to the model.
+- Exporting: Writes the output back into CSV format for batch processing.
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.

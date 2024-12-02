@@ -1,48 +1,26 @@
-import pandas as pd
-from fastapi import FastAPI
-from fastapi import UploadFile, File
-from pydantic import BaseModel
-from transformers import pipeline
+from fastapi import FastAPI, UploadFile, File
 
-# Initialize FastAPI app
+from app.model import load_model, analyze_text, analyze_batch
+from app.utils import preprocess_text, validate_csv
+
+# Initialize FastAPI app and model
 app = FastAPI()
-
-# Load pre-trained sentiment analysis model
-sentiment_model = pipeline("sentiment-analysis")
-
-
-# Define input schema
-class TextInput(BaseModel):
-    text: str
-
-
-@app.get("/")
-def root():
-    return {"message": "Sentiment Analysis API is running!"}
+model = load_model()
 
 
 @app.post("/analyze")
-def analyze_sentiment(input: TextInput):
-    result = sentiment_model(input.text)[0]
-    return {
-        "sentiment": result["label"].lower(),
-        "confidence": result["score"]
-    }
+def analyze(input_text: str):
+    # Preprocess input text
+    clean_text = preprocess_text(input_text)
+    # Analyze sentiment
+    result = analyze_text(model, clean_text)
+    return result
 
 
 @app.post("/batch")
-async def analyze_batch(file: UploadFile = File(...)):
-    # Read uploaded CSV
-    data = pd.read_csv(file.file)
-    if "text" not in data.columns:
-        return {"error": "CSV must contain a 'text' column"}
-
-    # Analyze sentiments
-    results = [
-        {"text": row, "sentiment": result["label"].lower(), "confidence": result["score"]}
-        for row in data["text"]
-        for result in [sentiment_model(row)]
-    ]
-
-    # Return results
+async def batch_analyze(file: UploadFile = File(...)):
+    # Validate CSV
+    data = validate_csv(file.file)
+    # Preprocess and analyze
+    results = analyze_batch(model, data["text"].tolist())
     return results
