@@ -6,7 +6,7 @@ def load_model():
     """
     Load and return the sentiment analysis model from Hugging Face Transformers.
     """
-    return pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+    return pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english", revision='af0f99b' )
 
 
 # Function to analyze a single text input
