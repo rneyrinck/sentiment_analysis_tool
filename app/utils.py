@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 # Function to preprocess text (if needed)
 def preprocess_text(text):
     """
@@ -13,6 +14,7 @@ def preprocess_text(text):
     """
     # Example preprocessing steps
     return text.strip().lower()
+
 
 # Function to validate CSV input
 def validate_csv(file):
@@ -35,6 +37,7 @@ def validate_csv(file):
         return data
     except Exception:
         raise ValueError("CSV must contain a 'text' column.")  # Simplified
+
 
 # Function to write results to a CSV
 def save_results_to_csv(results, output_file):
