@@ -1,15 +1,35 @@
 from transformers import pipeline
+import os
+import psutil
+
+# Global model variable for lazy loading
+model = None
 
 
-# Load the pre-trained sentiment analysis model
-def load_model():
+def log_memory():
     """
-    Load and return the sentiment analysis model from Hugging Face Transformers.
+    Logs the current memory usage of the process.
     """
-    return pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english", revision='af0f99b' )
+    process = psutil.Process(os.getpid())
+    memory_usage = process.memory_info().rss / 1024 ** 2  # Convert bytes to MB
+    print(f"Memory usage: {memory_usage:.2f} MB")
 
 
-# Function to analyze a single text input
+def get_model():
+    """
+    Lazily loads the sentiment analysis model.
+    Returns:
+        The sentiment analysis pipeline.
+    """
+    global model
+    if model is None:
+        log_memory()  # Log memory usage before loading
+        print("Loading the sentiment analysis model...")
+        model = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+        log_memory()  # Log memory usage after loading
+    return model
+
+
 def analyze_text(model, text):
     """
     Analyze the sentiment of a single text input.
@@ -29,22 +49,3 @@ def analyze_text(model, text):
         "sentiment": result["label"].lower(),
         "confidence": result["score"]
     }
-
-
-# Function to analyze a batch of texts
-def analyze_batch(model, texts):
-    """
-    Analyze the sentiment of a batch of text inputs.
-
-    Args:
-        model: The loaded sentiment analysis model.
-        texts (list of str): A list of text inputs to analyze.
-
-    Returns:
-        list of dict: A list of dictionaries with sentiment labels and confidence scores.
-    """
-    results = model(texts)
-    return [
-        {"text": text, "sentiment": res["label"].lower(), "confidence": res["score"]}
-        for text, res in zip(texts, results)
-    ]

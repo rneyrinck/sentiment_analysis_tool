@@ -3,9 +3,9 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 client = TestClient(app)
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
+# import logging
+#
+# logging.basicConfig(level=logging.DEBUG)
 
 
 def test_root():
