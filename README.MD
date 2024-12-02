@@ -45,34 +45,6 @@ A lightweight and scalable API for analyzing customer feedback sentiment. The to
 
 ---
 
-sentiment-analysis-api/
-│
-├── README.md                # Overview and instructions
-├── requirements.txt         # Python dependencies
-├── .gitignore               # Ignored files and folders
-│
-├── app/                     # Main application code
-│   ├── __init__.py          # Initialization file for the app
-│   ├── main.py              # API entry point (FastAPI/Flask app)
-│   ├── model.py             # Sentiment analysis pipeline
-│   └── utils.py             # Helper functions (e.g., data preprocessing)
-│
-├── tests/                   # Unit and integration tests
-│   ├── test_api.py          # Tests for API endpoints
-│   └── test_model.py        # Tests for ML pipeline
-│
-├── data/                    # Sample input and output files
-│   ├── sample_reviews.csv   # Example CSV for batch processing
-│   └── processed_output.csv # Example output for documentation/demo
-│
-├── docker/                  # Docker-related configuration
-│   ├── Dockerfile           # Dockerfile to containerize the app
-│   └── docker-compose.yml   # Optional: Multi-container setup
-│
-└── deployment/              # Deployment scripts/configs
-    ├── heroku.yml           # Heroku-specific config (if applicable)
-    └── README.md            # Deployment instructions
-
 
 ## Setup and Usage
 
@@ -111,6 +83,37 @@ git push heroku main
 
 ## Contributing
 Contributions are welcome! Please fork the repository and submit a pull request.
+
+### Project structure
+```plaintext
+sentiment-analysis-api/
+│
+├── README.md                # Overview and instructions
+├── requirements.txt         # Python dependencies
+├── .gitignore               # Ignored files and folders
+│
+├── app/                     # Main application code
+│   ├── __init__.py          # Initialization file for the app
+│   ├── main.py              # API entry point (FastAPI/Flask app)
+│   ├── model.py             # Sentiment analysis pipeline
+│   └── utils.py             # Helper functions (e.g., data preprocessing)
+│
+├── tests/                   # Unit and integration tests
+│   ├── test_api.py          # Tests for API endpoints
+│   └── test_model.py        # Tests for ML pipeline
+│
+├── data/                    # Sample input and output files
+│   ├── sample_reviews.csv   # Example CSV for batch processing
+│   └── processed_output.csv # Example output for documentation/demo
+│
+├── docker/                  # Docker-related configuration
+│   ├── Dockerfile           # Dockerfile to containerize the app
+│   └── docker-compose.yml   # Optional: Multi-container setup
+│
+└── deployment/              # Deployment scripts/configs
+    ├── heroku.yml           # Heroku-specific config (if applicable)
+    └── README.md            # Deployment instructions
+```
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
