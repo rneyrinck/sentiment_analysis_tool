@@ -1,26 +1,54 @@
 from fastapi import FastAPI, UploadFile, File
+from pydantic import BaseModel, Field
+from transformers import pipeline
+from app.utils import validate_csv
 
-from app.model import load_model, analyze_text, analyze_batch
-from app.utils import preprocess_text, validate_csv
-
-# Initialize FastAPI app and model
+# Initialize FastAPI app
 app = FastAPI()
-model = load_model()
+
+# Load sentiment analysis model
+sentiment_model = pipeline("sentiment-analysis")
+
+
+# Define input schema
+class TextInput(BaseModel):
+    text: str = Field(..., min_length=1, description="Input text must not be empty")
+
+
+@app.get("/")
+def root():
+    return {"message": "Sentiment Analysis API is running!"}
 
 
 @app.post("/analyze")
-def analyze(input_text: str):
-    # Preprocess input text
-    clean_text = preprocess_text(input_text)
-    # Analyze sentiment
-    result = analyze_text(model, clean_text)
-    return result
+def analyze_sentiment(input: TextInput):
+    result = sentiment_model(input.text)[0]
+    return {
+        "sentiment": result["label"].lower(),
+        "confidence": result["score"]
+    }
 
 
 @app.post("/batch")
 async def batch_analyze(file: UploadFile = File(...)):
-    # Validate CSV
-    data = validate_csv(file.file)
-    # Preprocess and analyze
-    results = analyze_batch(model, data["text"].tolist())
+    try:
+        data = validate_csv(file.file)
+    except ValueError as e:
+        return {"error": str(e)}  # Handle invalid CSV files
+
+    results = []
+    for row in data["text"]:
+        # print(f"row: {row}")
+        try:
+            result = sentiment_model(row)  # Get prediction
+            # print(f"sentiment_model output for '{row}': {result}")
+            results.append({
+                "text": row,
+                "sentiment": result[0]["label"].lower(),
+                "confidence": result[0]["score"]
+            })
+        except Exception as e:
+            # print(f"Error processing row '{row}': {str(e)}")
+            return {"error": f"Error processing row '{row}': {str(e)}"}
+
     return results

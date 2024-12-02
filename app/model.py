@@ -1,11 +1,13 @@
 from transformers import pipeline
 
+
 # Load the pre-trained sentiment analysis model
 def load_model():
     """
     Load and return the sentiment analysis model from Hugging Face Transformers.
     """
     return pipeline("sentiment-analysis")
+
 
 # Function to analyze a single text input
 def analyze_text(model, text):
@@ -24,6 +26,7 @@ def analyze_text(model, text):
         "sentiment": result["label"].lower(),
         "confidence": result["score"]
     }
+
 
 # Function to analyze a batch of texts
 def analyze_batch(model, texts):

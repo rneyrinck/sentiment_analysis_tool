@@ -33,8 +33,8 @@ def validate_csv(file):
         if "text" not in data.columns:
             raise ValueError("CSV must contain a 'text' column.")
         return data
-    except Exception as e:
-        raise ValueError(f"Invalid CSV file: {str(e)}")
+    except Exception:
+        raise ValueError("CSV must contain a 'text' column.")  # Simplified
 
 # Function to write results to a CSV
 def save_results_to_csv(results, output_file):
