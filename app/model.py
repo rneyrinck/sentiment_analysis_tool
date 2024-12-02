@@ -6,7 +6,7 @@ def load_model():
     """
     Load and return the sentiment analysis model from Hugging Face Transformers.
     """
-    return pipeline("sentiment-analysis")
+    return pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
 
 
 # Function to analyze a single text input
@@ -21,6 +21,9 @@ def analyze_text(model, text):
     Returns:
         dict: A dictionary with the sentiment label and confidence score.
     """
+    if not text.strip():  # Check for empty or whitespace-only input
+        return {"sentiment": "neutral", "confidence": 0.0}
+
     result = model(text)[0]
     return {
         "sentiment": result["label"].lower(),
