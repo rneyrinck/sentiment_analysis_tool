@@ -59,7 +59,7 @@ A lightweight and scalable API for analyzing the sentiment of customer feedback 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/sentiment_analysis_tool.git
+git clone https://github.com/rneyrinck/sentiment_analysis_tool.git
 cd sentiment_analysis_tool
 ```
 ### 2. Set Up a Virtual Environment
